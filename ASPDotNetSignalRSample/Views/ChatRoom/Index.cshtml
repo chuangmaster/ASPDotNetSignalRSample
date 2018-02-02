@@ -5,3 +5,42 @@
 
 <h2>Index</h2>
 
+<div>
+    Name: <input type="text" id="name" /><br>
+    Message: <input type="text" id="message" />
+    <input type="button" id="send" value="送出" />
+    <div>
+        聊天室內容:
+        <br />
+        <ul id="wholeMessages"></ul>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery.signalR-2.2.2.min.js" type="text/javascript"></script>
+@*--很重要的一個參考，一定要加，且在這一行之前，一定要先參考jQuery.js與signalR.js，SinalR會在此目錄產生JS程式碼--*@
+<script src="~/signalr/hubs" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+
+        // 建立對應server端Hub class的物件，請注意broadcastHub的第一個字母要改成小寫
+        var chat = $.connection.broadcastHub;
+
+        // 定義client端的javascript function，供server端hub，透過dynamic的方式，呼叫所有Clients的javascript function
+        chat.client.sendMessage = function (name, message) {
+            //當server端調用addMessage時，將server push的message資料，呈現在wholeMessage中
+            $('#wholeMessages').append('<li>' + name + " : " + message + '</li>');
+        };
+
+        $("#send").click(function () {
+            //呼叫server端的Hub物件，將#message資料傳給server
+            chat.server.sendMessage($('#name').val(), $('#message').val());
+            $('#message').val("");
+        });
+
+        //把connection打開
+        $.connection.hub.start().done(function () {
+            alert("Connect");
+        });
+    });
+</script>
