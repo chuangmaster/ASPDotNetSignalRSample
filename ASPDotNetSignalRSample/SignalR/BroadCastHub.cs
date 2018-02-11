@@ -14,6 +14,7 @@ namespace ASPDotNetSignalRSample.SignalR
         //允許Client端呼叫的方法
         public void SendMessage(string name, string message)
         {
+            var userName = Clients.Caller.UserName;
             connectionList.Add(Context.ConnectionId);
             //Server端呼叫所有客戶端
             //Clients.All.SendMessage(name, message);
