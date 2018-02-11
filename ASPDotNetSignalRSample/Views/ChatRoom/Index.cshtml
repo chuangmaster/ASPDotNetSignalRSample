@@ -8,6 +8,7 @@
 <div>
     Name: <input type="text" id="name" /><br>
     Message: <input type="text" id="message" />
+    <input type="button" id="login" value="登入" />
     <input type="button" id="send" value="送出" />
     <div>
         聊天室內容:
@@ -32,16 +33,27 @@
             $('#wholeMessages').append('<li>' + name + " : " + message + '</li>');
         };
 
+        chat.client.sendAlert = function (obj) {
+            alert(obj.name + " 上線囉! ");
+        };
+
         $("#send").click(function () {
             //呼叫server端的Hub物件，將#message資料傳給server
             chat.server.sendMessage($('#name').val(), $('#message').val());
             $('#message').val("");
         });
 
-        //把connection打開
-        $.connection.hub.start().done(function () {
-            chat.state.UserName = "David";
-            alert("Connect");
+        //登入
+        $("#login").click(function () {
+            //把connection打開
+            $.connection.hub.start().done(function (oj) {
+                //設定自訂的屬性
+                chat.state.UserName = $('#name').val();
+                alert("Connect");
+                chat.server.sendAlert($('#name').val());
+            });
         });
+
+
     });
 </script>
