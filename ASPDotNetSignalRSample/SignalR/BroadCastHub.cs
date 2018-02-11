@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
@@ -23,6 +24,32 @@ namespace ASPDotNetSignalRSample.SignalR
             //使用ClientProxy來做訊息發送
             IClientProxy clientProxy = Clients.All;
             clientProxy.Invoke("SendMessage", new { name = name, message = message });
+        }
+
+        /// <summary>
+        /// 生命週期 - On Connected
+        /// </summary>
+        /// <returns></returns>
+        public override Task OnConnected()
+        {
+            return base.OnConnected();
+        }
+        /// <summary>
+        /// 生命週期 - On DisConnected
+        /// </summary>
+        /// <param name="stopCalled"></param>
+        /// <returns></returns>
+        public override Task OnDisconnected(bool stopCalled)
+        {
+            return base.OnDisconnected(stopCalled);
+        }
+        /// <summary>
+        /// 生命週期 - On Reconnected
+        /// </summary>
+        /// <returns></returns>
+        public override Task OnReconnected()
+        {
+            return base.OnReconnected();
         }
     }
 }
