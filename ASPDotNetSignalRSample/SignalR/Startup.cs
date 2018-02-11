@@ -4,6 +4,7 @@ using ASPDotNetSignalRSample;
 //允許CORS
 using Microsoft.Owin.Cors;
 using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
 
 [assembly: OwinStartup(typeof(ASPDotNetSignalRSample.SignalR.Startup))]
 namespace ASPDotNetSignalRSample.SignalR
@@ -24,6 +25,21 @@ namespace ASPDotNetSignalRSample.SignalR
                 };
                 map.RunSignalR(hubConfiguraion);
             });
+            GlobalHost.HubPipeline.AddModule(new TestPipelineModule());
+            //GlobalHost.HubPipeline.RequireAuthentication();
+        }
+    }
+
+    public class TestPipelineModule : HubPipelineModule
+    {
+        protected override bool OnBeforeIncoming(IHubIncomingInvokerContext context)
+        {
+            return base.OnBeforeIncoming(context);
+        }
+
+        protected override bool OnBeforeOutgoing(IHubOutgoingInvokerContext context)
+        {
+            return base.OnBeforeOutgoing(context);
         }
     }
 }
