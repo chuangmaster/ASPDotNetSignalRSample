@@ -45,15 +45,19 @@
 
         //登入
         $("#login").click(function () {
+            //連接時傳遞QueryString
+            $.connection.hub.qs = { 'test': '我是參數1', 'test2': '我是參數2' };
             //把connection打開
             $.connection.hub.start().done(function (oj) {
+                console.log("ConnectID = " + $.connection.hub.id);
+                console.log("Connected, transport = " + $.connection.hub.transport.name);
+
                 //設定自訂的屬性
                 chat.state.UserName = $('#name').val();
                 alert("Connect");
                 chat.server.sendAlert($('#name').val());
             });
         });
-
 
     });
 </script>
