@@ -40,6 +40,8 @@ namespace ASPDotNetSignalRSample.SignalR
         /// <returns></returns>
         public override Task OnConnected()
         {
+            //測試Error Handle 引發錯誤
+            //string aa = null; aa.ToString();
             return base.OnConnected();
         }
         /// <summary>
