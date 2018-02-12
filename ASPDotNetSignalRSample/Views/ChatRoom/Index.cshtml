@@ -59,5 +59,35 @@
             });
         });
 
+
+        //Javascript Client Event
+        //當接受到訊息
+        $.connection.hub.received(function () {
+            console.log("Received Somethings.")
+        });
+        //當開始連接
+        $.connection.hub.starting(function () {
+            console.log("Start.")
+        });
+        //當重新連接
+        $.connection.hub.reconnecting(function () {
+            console.log("Reconnect.")
+        });
+        //當狀態改變
+        $.connection.hub.stateChanged(function () {
+            console.log("State Changed.")
+        });
+        //當斷線
+        $.connection.hub.disconnected(function () {
+            console.log("Disconnected.")
+        });
+        //當連線速度變慢
+        $.connection.hub.connectionSlow(function () {
+            console.log("connectionSlow.")
+        });
+        //當有錯誤訊息
+        $.connection.hub.error(function (error) {
+            console.log("SingalR Hub發生錯誤，錯誤原因: " + error);
+        });
     });
 </script>
