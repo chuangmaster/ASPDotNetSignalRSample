@@ -14,7 +14,7 @@ namespace SignalRFormSample
     public partial class Form1 : Form
     {
         //建立連線
-        HubConnection hubConnection = new HubConnection("http://localhost:55500/");
+        HubConnection hubConnection;
         IHubProxy proxy;
         public Form1()
         {
@@ -25,6 +25,10 @@ namespace SignalRFormSample
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            var queryString = new Dictionary<string, string>();
+            queryString.Add("QS1", "參數1");
+            queryString.Add("QS2", "參數2");
+            hubConnection = new HubConnection("http://localhost:55500/", queryString);
             // 建立 Hub Proxy
             proxy = hubConnection.CreateHubProxy("broadcastHub");
             // 建立 Invoke內容
