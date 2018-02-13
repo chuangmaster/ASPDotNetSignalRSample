@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.SignalR.Client;
+using Microsoft.AspNet.SignalR.Client.Transports;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,8 +38,10 @@ namespace SignalRFormSample
             proxy.On<string, string>("SendMessage", (name, message) =>
             content.Invoke(invoker, name, message)
             );
-            //連線 SignalR Server
-            hubConnection.Start().Wait();
+            //增加Header
+            hubConnection.Headers.Add("headerParameter", "parameter");
+            //連線 SignalR Server；同時更換連線方式
+            hubConnection.Start(new LongPollingTransport()).Wait();
         }
 
         private async void button1_Click(object sender, EventArgs e)
