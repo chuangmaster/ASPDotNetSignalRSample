@@ -35,13 +35,18 @@ namespace SignalRFormSample
             // 建立 Invoke內容
             InvokeMethod invoker = (name, message) => content.AppendText($"{name}:{message}\n");
             //註冊給伺服端呼叫的方法
-            proxy.On<string, string>("SendMessage", (name, message) =>
+            var sendMessageProxy = proxy.On<string, string>("SendMessage", (name, message) =>
             content.Invoke(invoker, name, message)
             );
+            //取消註冊呼叫的方法
+            //sendMessageProxy.Dispose();
             //增加Header
             hubConnection.Headers.Add("headerParameter", "parameter");
+            //註冊事件發生執行的方法
+            hubConnection.StateChanged += (x) => { content.AppendText("狀態改變了...目前狀態是:" + x.NewState + "\n"); };
             //連線 SignalR Server；同時更換連線方式
             hubConnection.Start(new LongPollingTransport()).Wait();
+
         }
 
         private async void button1_Click(object sender, EventArgs e)
@@ -50,6 +55,9 @@ namespace SignalRFormSample
             await proxy.Invoke("SendMessage", UserName.Text, Message.Text);
         }
 
-
+        private void button2_Click(object sender, EventArgs e)
+        {
+            hubConnection.Stop();
+        }
     }
 }
